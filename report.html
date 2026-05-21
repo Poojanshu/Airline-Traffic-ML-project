@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. Aviation Performance & Forecasting Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <div class="logo">
+                <span class="accent-text">U.S. AVIATION</span> ANALYTICS
+            </div>
+            <div class="subtitle">Problem Statement 3 (PS-3) • L&T EduTech Project Dashboard</div>
+        </header>
+
+        <!-- KPI SUMMARY CARDS -->
+        <section class="kpis">
+            <div class="card glass">
+                <div class="kpi-title">Classification Accuracy</div>
+                <div class="kpi-value text-purple">99.28%</div>
+                <div class="kpi-desc">Decision Tree prediction score</div>
+            </div>
+            <div class="card glass">
+                <div class="kpi-title">Classification F1-Score</div>
+                <div class="kpi-value text-blue">0.994</div>
+                <div class="kpi-desc">Balance of precision & recall</div>
+            </div>
+            <div class="card glass">
+                <div class="kpi-title">Forecast MAPE</div>
+                <div class="kpi-value text-emerald">1.804%</div>
+                <div class="kpi-desc">Mean Absolute Percentage Error</div>
+            </div>
+            <div class="card glass">
+                <div class="kpi-title">Forecast MAE</div>
+                <div class="kpi-value text-amber">0.06M</div>
+                <div class="kpi-desc">Mean Absolute Error (passengers)</div>
+            </div>
+        </section>
+
+        <!-- EXPLORATORY DATA ANALYSIS -->
+        <section class="section">
+            <h2 class="section-title">1. Exploratory Data Analysis & Seasonality</h2>
+            <p class="section-text">
+                Commercial aviation passengers show dramatic seasonal patterns. Volume peaks significantly in the summer (June, July, August) and during winter holidays (December), and plummets in January and February.
+            </p>
+            <div class="image-container glass">
+                <img src="plots/seasonality.png" alt="Aviation Seasonality Charts">
+            </div>
+            
+            <div class="grid-2">
+                <div class="image-container glass">
+                    <h3 class="inner-title">Core Correlations Heatmap</h3>
+                    <img src="plots/correlation.png" alt="Correlation Matrix">
+                </div>
+                <div class="text-box glass">
+                    <h3 class="inner-title">Analytical Findings</h3>
+                    <ul>
+                        <li><strong>Flights and Capacity (ASM)</strong> share a near-perfect correlation (<strong>~0.99</strong>), indicating airlines scale capacity by scheduling flights rather than increasing passenger density.</li>
+                        <li><strong>Passengers and RPM</strong> are perfectly correlated, showing that Revenue Passenger Miles reflect actual passenger volume scaled by average flight distances.</li>
+                        <li><strong>Load Factor (LF)</strong> has a moderate correlation with Passengers, proving that higher demand periods naturally drive better seat occupancy (efficiency).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- PERFORMANCE CLASSIFICATION -->
+        <section class="section">
+            <h2 class="section-title">2. Airline Performance Classification</h2>
+            <p class="section-text">
+                A <strong>Decision Tree Classifier</strong> was trained to predict whether an airline/airport month operates at an efficient load factor (Load Factor &ge; 78%) based on passenger volume, scheduled flights, and passenger density.
+            </p>
+            <div class="grid-2">
+                <div class="image-container glass">
+                    <img src="plots/confusion_matrix.png" alt="Classification Confusion Matrix">
+                </div>
+                <div class="text-box glass">
+                    <h3 class="inner-title">Classification Performance Metrics</h3>
+                    <table class="metrics-table">
+                        <tr>
+                            <th>Judging Metric</th>
+                            <th>Value</th>
+                            <th>Interpretation</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Accuracy</strong></td>
+                            <td class="text-purple">99.28%</td>
+                            <td>Ratio of correct efficiency predictions to total months.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Precision</strong></td>
+                            <td class="text-blue">99.72%</td>
+                            <td>Predictive rate for true operating efficiency.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Recall</strong></td>
+                            <td class="text-emerald">99.16%</td>
+                            <td>Percentage of highly efficient months successfully captured.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>F1-Score</strong></td>
+                            <td class="text-amber">0.9944</td>
+                            <td>Harmonic mean, confirming strong class balance.</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEMAND FORECASTING -->
+        <section class="section">
+            <h2 class="section-title">3. Passenger Demand Forecasting</h2>
+            <p class="section-text">
+                A <strong>Holt-Winters Triple Exponential Smoothing</strong> model was fitted on U.S. aggregate passenger demand. This model captures the linear long-term growth trend and the 12-month multiplicative seasonality pattern.
+            </p>
+            <div class="image-container glass">
+                <img src="plots/demand_forecast.png" alt="Holt-Winters Passenger Demand Forecast">
+            </div>
+            
+            <div class="text-box glass mt-20">
+                <h3 class="inner-title">Forecasting Evaluation (12-Month Backtest)</h3>
+                <div class="grid-3">
+                    <div class="metric-item">
+                        <div class="metric-num text-emerald">1.804%</div>
+                        <div class="metric-lbl">Mean Absolute Percent Error (MAPE)</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-num text-blue">63,753</div>
+                        <div class="metric-lbl">Mean Absolute Error (MAE - passengers)</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-num text-purple">75,861</div>
+                        <div class="metric-lbl">Root Mean Squared Error (RMSE)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MITIGATION STRATEGIES -->
+        <section class="section">
+            <h2 class="section-title">4. Underperformance Analysis & Mitigation Report</h2>
+            <p class="section-text">
+                Airlines and airports experiencing Load Factors consistently below <strong>78%</strong> have been identified as underperforming.
+            </p>
+            
+            <div class="grid-2">
+                <div class="table-box glass">
+                    <h3 class="inner-title">Worst Performing Operations</h3>
+                    <table class="worst-table">
+                        <thead>
+                            <tr>
+                                <th>Carrier</th>
+                                <th>Hub Airport</th>
+                                <th>Underperforming Months</th>
+                                <th>Underperformance Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+        <tr>
+            <td><strong>WN</strong></td>
+            <td>ORD</td>
+            <td>135 / 174</td>
+            <td><span class="badge badge-danger">77.6%</span></td>
+        </tr>
+        
+        <tr>
+            <td><strong>WN</strong></td>
+            <td>LAX</td>
+            <td>131 / 174</td>
+            <td><span class="badge badge-danger">75.3%</span></td>
+        </tr>
+        
+        <tr>
+            <td><strong>WN</strong></td>
+            <td>ATL</td>
+            <td>127 / 174</td>
+            <td><span class="badge badge-danger">73.0%</span></td>
+        </tr>
+        
+        <tr>
+            <td><strong>WN</strong></td>
+            <td>JFK</td>
+            <td>120 / 174</td>
+            <td><span class="badge badge-danger">69.0%</span></td>
+        </tr>
+        
+        <tr>
+            <td><strong>AA</strong></td>
+            <td>ORD</td>
+            <td>70 / 174</td>
+            <td><span class="badge badge-danger">40.2%</span></td>
+        </tr>
+        
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-box glass">
+                    <h3 class="inner-title">Mitigation Action Plan</h3>
+                    <div class="mitigation-block">
+                        <div class="mitigation-header text-amber">
+                            <span class="mitigation-badge">Capacity</span> 1. Seasonal Capacity Realignment
+                        </div>
+                        <p class="mitigation-text">
+                            <strong>Action:</strong> Prune flight frequencies by 10-15% during structural troughs (January and February) for underperforming airlines. Reallocate aircraft to high-performing summer hubs to protect the Load Factor.
+                        </p>
+                    </div>
+                    <div class="mitigation-block">
+                        <div class="mitigation-header text-blue">
+                            <span class="mitigation-badge">Pricing</span> 2. Seasonal Dynamic Pricing Strategies
+                        </div>
+                        <p class="mitigation-text">
+                            <strong>Action:</strong> Implement aggressive promotional pricing and low-tier leisure fares during off-peak autumn and winter months to stimulate demand, driving load factors back above the 78% efficiency line.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            Prepared for L&T EduTech ML Problem Statement evaluation • Designed for First-Time Users
+        </footer>
+    </div>
+</body>
+</html>
